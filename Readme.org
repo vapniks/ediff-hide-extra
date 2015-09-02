@@ -1,0 +1,26 @@
+* Possible Dependencies
+ediff
+* Commentary
+
+Bitcoin donations gratefully accepted :: 12k9zUo9Dgqk8Rary2cuzyvAQWD5EAuZ4q
+
+This package sets some default regexps for hiding lines based on `major-mode'
+of ediff buffers when #h is pressed.
+
+* Installation
+Put ediff-hide-extra.el in a directory in your load-path, e.g. ~/.emacs.d/
+You can add a directory to your load-path with the following line in ~/.emacs
+(add-to-list 'load-path (expand-file-name "~/elisp"))
+where ~/elisp is the directory you want to add 
+(you don't need to do this for ~/.emacs.d - it's added by default).
+
+Add the following to your ~/.emacs startup file.
+
+(require 'ediff-hide-extra)
+
+Add `ediff-hide-regexp-defaults-alist' to the list of functions in `ediff-prepare-buffer-hook' :
+
+M-x customize-variable RET ediff-prepare-buffer-hook RET
+* Customizable Options
+
+ - `ediff-hide-regexp-defaults-alist' : regexps matching lines to hide for each major-mode
