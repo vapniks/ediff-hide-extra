@@ -1,1 +1,0 @@
-# ediff-hide-extra
