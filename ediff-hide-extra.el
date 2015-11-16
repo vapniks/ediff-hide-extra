@@ -91,20 +91,21 @@
 ;;;###autoload
 (defun ediff-hide-regexp-set-defaults ()
   "Function to be called by `ediff-prepare-buffer-hook' to set the default regexp's for
-          selective browsing when #h is pressed."
-  (let (regexp-A regexp-B regexp-C)
-    (with-current-buffer ediff-buffer-A
-      (setq regexp-A (cadr (assoc major-mode ediff-hide-regexp-defaults-alist))))
-    (with-current-buffer ediff-buffer-B
-      (setq regexp-B (cadr (assoc major-mode ediff-hide-regexp-defaults-alist))))
-    (if ediff-buffer-C
-	(with-current-buffer ediff-buffer-C
-	  (setq regexp-C (cadr (assoc major-mode ediff-hide-regexp-defaults-alist)))))
-    ;; ediff-regexp-hide-A and ediff-regexp-hide-B are local to the control buffer,
-    ;; so can only set them from within control buffer.
-    (setq ediff-regexp-hide-A (or regexp-A "")
-	  ediff-regexp-hide-B (or regexp-B "")
-	  ediff-regexp-hide-C (or regexp-C ""))))
+selective browsing when #h is pressed."
+  (let ((bufs (with-current-buffer control-buffer
+		(list ediff-buffer-A
+		      ediff-buffer-B
+		      ediff-buffer-C)))
+	(val (or (cadr (assoc major-mode ediff-hide-regexp-defaults-alist)) "")))
+    (cond ((eq (current-buffer) (first bufs))
+	   (with-current-buffer control-buffer
+	     (setq ediff-regexp-hide-A val)))
+	  ((eq (current-buffer) (second bufs))
+	   (with-current-buffer control-buffer
+	     (setq ediff-regexp-hide-B val)))
+	  ((eq (current-buffer) (third bufs))
+	   (with-current-buffer control-buffer
+	     (setq ediff-regexp-hide-C val))))))
 
 (add-hook 'ediff-prepare-buffer-hook 'ediff-hide-regexp-set-defaults)
 
