@@ -111,7 +111,6 @@ selective browsing when #h is pressed."
 	   (with-current-buffer control-buffer
 	     (setq ediff-regexp-hide-C val))))))
 
-(add-hook 'ediff-prepare-buffer-hook 'ediff-hide-regexp-set-defaults)
 (add-hook 'ediff-startup-hook 'ediff-hide-regexp-set-defaults)
 
 (provide 'ediff-hide-extra)
