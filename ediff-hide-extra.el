@@ -92,11 +92,15 @@
 (defun ediff-hide-regexp-set-defaults ()
   "Function to be called by `ediff-prepare-buffer-hook' to set the default regexp's for
 selective browsing when #h is pressed."
-  (let ((bufs (with-current-buffer control-buffer
-		(list ediff-buffer-A
-		      ediff-buffer-B
-		      ediff-buffer-C)))
-	(val (or (cadr (assoc major-mode ediff-hide-regexp-defaults-alist)) "")))
+  (let* ((control-buffer (if (and (boundp 'control-buffer)
+				  (bufferp (symbol-value 'control-buffer)))
+			     (symbol-value 'control-buffer)
+			   ediff-control-buffer))
+	 (bufs (with-current-buffer control-buffer
+		 (list ediff-buffer-A
+		       ediff-buffer-B
+		       ediff-buffer-C)))
+	 (val (or (cadr (assoc major-mode ediff-hide-regexp-defaults-alist)) "")))
     (cond ((eq (current-buffer) (first bufs))
 	   (with-current-buffer control-buffer
 	     (setq ediff-regexp-hide-A val)))
@@ -108,6 +112,7 @@ selective browsing when #h is pressed."
 	     (setq ediff-regexp-hide-C val))))))
 
 (add-hook 'ediff-prepare-buffer-hook 'ediff-hide-regexp-set-defaults)
+(add-hook 'ediff-startup-hook 'ediff-hide-regexp-set-defaults)
 
 (provide 'ediff-hide-extra)
 
